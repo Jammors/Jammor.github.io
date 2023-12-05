@@ -1,0 +1,51 @@
+---
+layout: default
+refactor: true
+---
+
+{% include lang.html %} {% assign pinned = site.posts | where: 'pin', 'true' %}
+
+<div id="post-list" class="flex-grow-1 px-xl-1">
+  <article class="card-wrapper card">
+    <a
+      href="{% if entry.url %}https://{{ entry.url }}{% else %}{{ page.url | relative_url }}{% endif %}"
+      class="post-preview row g-0 flex-md-row-reverse"
+    >
+      <div class="col-md-{{ card_body_col }}">
+        <div class="card-body d-flex flex-column">
+          <h1 class="card-title my-2 mt-md-0">{{ entry.title }}</h1>
+
+          <div class="card-text content mt-0 mb-3">
+            {% include no-linenos.html content=entry.abstract %} {{ content |
+            markdownify | strip_html | truncate: 200 | escape }}
+          </div>
+
+          <div class="post-meta flex-grow-1 d-flex align-items-end">
+            <div class="me-auto">
+              <!-- posted date -->
+
+              <i class="far fa-calendar fa-fw me-1"></i>
+              {% capture date_cap
+              %}{{entry.year}}-{{entry.month_numeric}}-{{entry.day}}{%
+              endcapture %} {% include datetime.html date=date_cap lang=lang %}
+
+              <!-- authors -->
+              <i class="far fa-solid fa-feather-pointed"></i>
+              <span class="categories"> {{entry.author}} </span>
+            </div>
+
+            <!-- publishers -->
+            <div class="pin ms-1">
+              <span>{{entry.publisher}}</span>
+            </div>
+          </div>
+          <!-- .post-meta -->
+        </div>
+        <!-- .card-body -->
+      </div>
+    </a>
+  </article>
+</div>
+<!-- #post-list -->
+
+{% if paginator.total_pages > 1 %} {% include post-paginator.html %} {% endif %}
